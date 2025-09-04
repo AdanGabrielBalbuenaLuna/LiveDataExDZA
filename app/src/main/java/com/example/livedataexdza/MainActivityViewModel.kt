@@ -4,7 +4,6 @@ import android.os.CountDownTimer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.util.Objects
 
 class MainActivityViewModel: ViewModel() {
 
@@ -14,8 +13,10 @@ class MainActivityViewModel: ViewModel() {
     val seconds: LiveData<Int> get() = _seconds
     val finished: LiveData<Boolean> get() = _finished
 
+    var timerValue = MutableLiveData<Long>()
+
     fun startTimer() {
-        timer = object : CountDownTimer(10000, 1000) {
+        timer = object : CountDownTimer(timerValue.value!!, 1000) {
             override fun onFinish() {
                 _finished.value = true
             }
@@ -28,6 +29,6 @@ class MainActivityViewModel: ViewModel() {
     }
 
     fun stopTimer() {
-
+        timer.cancel()
     }
 }
